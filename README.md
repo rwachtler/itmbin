@@ -1,4 +1,9 @@
 itmbin
 ======
 
-This project was set up for the "Dynamic Web" lecture on "FH JOANNEUM" .
+This tool provides an easy way to code HTML, CSS, JS with your mates.
+
+Following features are included
+	- Storing all your snippets in your personal account
+	- Syntax highlight
+	- Importing external libraries like Bootstrap / jQuery
