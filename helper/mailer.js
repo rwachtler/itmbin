@@ -25,4 +25,5 @@ Mailer.prototype.sendMail = function(to, subject, message, callback){
 			}
 		});
 }
+
 module.exports.Mailer = Mailer

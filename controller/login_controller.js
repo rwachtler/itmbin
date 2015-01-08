@@ -1,8 +1,10 @@
 "use strict"
 
+var fs = require("fs");
+
 var PageView = require("../view/page_view");
 
-// Database connection
+// Database connection-
 var db = require('../helper/db-mysql');
 var conn = new db.Connection();
 
@@ -12,13 +14,15 @@ var binhelper = new ItmBin.ItmBin();
 
 // Nodemailer
 var mailer = require('../helper/mailer');
-var mail = new mailer.Mailer();
+var mail_sender = new mailer.Mailer();
+
+var mailTemplateFile = "view/login/mail_template.html";
 
 var LoginController = function(){
 
 }
 
-LoginController.prototype.handle = function(restUrl,res){
+LoginController.prototype.handle = function(restUrl,res,config){
 
 	// PUT http://localhost:8888/song/1.json?title=Unten%20am%20Hafen&lang=de
 	// => method = PUT path = / resource = song id = 1 format = json params = { 'title' : "Unten am Hafen", 'lang': "de"}
@@ -47,29 +51,49 @@ LoginController.prototype.handle = function(restUrl,res){
 
 			conn.create();
 			conn.registerUser(user_obj, function () {
-				// generate confirmation link
-				var conf_link = "http://127.0.0.1:1337/login/confirm?mail=" + uemail + "&key=" + auth_key;
+				// read mail template
+				fs.readFile(mailTemplateFile, function(err, filedata){
+					if (err === null ){
+						// generate confirmation link
+						var conf_link = "http://" + config.server + ":" + config.port + "/login/confirm?mail=" + uemail + "&key=" + auth_key;
 
-				var mail_subject = "Registrierung bei ITM - Bin";
-				var mail_text = "";
+						var mail_subject = "Registrierung bei ITM - Bin";
+						var mail_text = filedata.toString('UTF-8');
 
-				mail_text = mail_text.replace(/{LOGIN}/g, uname)
-														.replace(/{CONFIRMATION_LINK}/g, conf_link);
+						mail_text = mail_text.replace(/{LOGIN}/g, uname)
+																.replace(/{CONFIRMATION_LINK}/g, conf_link);
 
-				// send confirmation mail
-				mail.sendMail(uemail, mail_subject, mail_text, function() {
-					// redirect to confirmation page
+						console.log(mail_text);
 
+						// send confirmation mail
+						/*mail_sender.sendMail(uemail, mail_subject, mail_text, function() {
+							// redirect to confirmation page
+							console.log("redirecting to confirmation page...");
 
+						});*/
+					}else
+						returnErr(res,"Error reading mail template file: " + err);
 				});
 			});
 			conn.close();
 	} else if (restUrl.id == "confirm") {
-			var mail = decodeURIComponent(restUrl.params.mail);
+			var auth_mail = decodeURIComponent(restUrl.params.mail);
 			var auth_key = decodeURIComponent(restUrl.params.key);
 
 			// check database for matching mail / key combination
 			// set auth to 1
+
+			var user_data = [auth_mail, auth_key];
+
+			conn.create();
+			conn.confirmUser(user_data, function () {
+				// Success
+
+			}, function () {
+				// Failure
+			});
+
+			conn.close();
 
 			// redirect to successful registration page
 	} else if (restUrl.id == "check") {

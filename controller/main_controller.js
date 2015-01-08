@@ -53,7 +53,7 @@ var restRouting = function(req,res,restUrl){
 		break;
 	case 'login':
 		var loginController = require('./login_controller')
-		loginController.handle(restUrl, res)
+		loginController.handle(restUrl, res, config)
 		break;
 	default:
 		// unknown filename/path/id/format:
