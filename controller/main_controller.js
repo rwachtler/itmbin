@@ -11,6 +11,19 @@ var up = require('../helper/urlparser')
 var routes = require('./routes')
 var sessMgmt = require('../model/session_mgmt')
 
+// MySql connector
+var db = require('../helper/db-mysql');
+var conn = new db.Connection();
+
+// ITM - Bin helper
+var ItmBin = require('../helper/itmbin')
+var binhelper = new ItmBin.ItmBin();
+
+conn.create();
+conn.init();
+conn.getUserByEmail("michael@fh.at");
+conn.close();
+
 var restRouting = function(req,res,restUrl){
 
 	// get or create a session from SessionManagement

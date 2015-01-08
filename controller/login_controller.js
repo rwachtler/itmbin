@@ -3,7 +3,7 @@
 var PageView = require("../view/page_view")
 
 var LoginController = function(){
-	console.log("DEBUG LoginController initialise: not implemented yet")
+
 }
 
 LoginController.prototype.handle = function(restUrl,res){
@@ -22,7 +22,10 @@ LoginController.prototype.handle = function(restUrl,res){
 
 		var theView = new PageView()
 		theView.render(res,restUrl, data)
-	} else if (restUrl.id =="check") {
+	} else if (restUrl.id == "save") {
+			// save the registration and send confirmation mail
+			
+	} else if (restUrl.id == "check") {
 			console.log("Now we check the login")
 	} else{
 		console.log("DEBUG PageController handle: id unknown:",restUrl.id)
