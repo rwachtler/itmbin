@@ -1,0 +1,5 @@
+#!/usr/bin/env node
+console.log("We start up the Song-Management for DynaWeb...")
+
+theapp = require('./controller/main_controller')
+theapp.startup()

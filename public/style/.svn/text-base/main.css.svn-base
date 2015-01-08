@@ -1,0 +1,5 @@
+// TODO: provide CSS - File
+
+body {
+    background-color: aqua;
+}

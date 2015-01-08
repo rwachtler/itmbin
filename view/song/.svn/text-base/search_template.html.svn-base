@@ -1,0 +1,26 @@
+<h1>Song-Management:</h1>
+
+	<div>
+		<label for="searchterm" >Songauswahl:</label>
+		<input id="searchterm" type="text"  value="" maxlength="50"  tabindex="-1"/>
+		<button id="searchButton">Search</button>
+	</div>
+
+	<button id="getAllButton">Refresh List</button>
+	<div id="listOfSongs">
+	a list of (filtered songs should appear here...
+	</div>
+	
+	Add a New Song 
+	<label for="newsong_title" >Title:</label>
+	<input id="newsong_title" type="text"  value="" maxlength="50"  tabindex="-1"/>
+	<label for="newsong_artist" >Artist:</label>
+	<input id="newsong_artist" type="text"  value="" maxlength="50"  tabindex="-1"/>
+	<button id="postButton">Create a new song</button>
+	
+<hr/>
+	<small>
+	DEBUG:<div id="message" />
+	</small>
+<hr/>
+	
