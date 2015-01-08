@@ -25,4 +25,4 @@ Mailer.prototype.sendMail = function(callback,to,subject,message){
 			}
 		});
 }
-module.exports = Mailer
+module.exports.Mailer = Mailer

@@ -13,6 +13,9 @@ Connection.prototype.create = function () {
     });
 
     this.connection.connect();
+
+    // use database
+    this.connection.query("USE itmbin");
   }
 }
 
@@ -20,6 +23,18 @@ Connection.prototype.close = function () {
   this.connection.end( function(err) {
     console.log(err);
   } )
+}
+
+Connection.prototype.getUsers = function () {
+  var sql = "SELECT * FROM users";
+
+  this.connection.query(sql, function (err, rows) {
+    if (err) {
+      throw err;
+    } else {
+      console.log(rows);
+    }
+  });
 }
 
 Connection.prototype.getUserByEmail = function (email) {
@@ -34,7 +49,7 @@ Connection.prototype.getUserByEmail = function (email) {
   });
 }
 
-Connection.prototype.registerUser = function (user) {
+Connection.prototype.registerUser = function (user, callback) {
   this.connection.query("INSERT INTO users (user_name, email, pw, auth_key) VALUES (?, ?, ?, ?)", user, function(err, results) {
     if (err) {
       console.log("Error: " + err.message);
@@ -43,6 +58,8 @@ Connection.prototype.registerUser = function (user) {
 
     console.log("Inserted " + results.affectedRows + " row.");
     console.log("Id inserted: " + results.insertId);
+
+    callback();
   });
 }
 

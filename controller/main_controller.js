@@ -19,11 +19,6 @@ var conn = new db.Connection();
 var ItmBin = require('../helper/itmbin')
 var binhelper = new ItmBin.ItmBin();
 
-conn.create();
-conn.init();
-conn.getUserByEmail("michael@fh.at");
-conn.close();
-
 var restRouting = function(req,res,restUrl){
 
 	// get or create a session from SessionManagement
