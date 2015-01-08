@@ -63,6 +63,23 @@ Connection.prototype.registerUser = function (user, callback) {
   });
 }
 
+Connection.prototype.confirmUser = function (user_data, callback_success, callback_failure) {
+  this.connection.query("UPDATE users SET auth = 1 WHERE email = ? AND auth_key = ? AND auth = 0", user_data, function (err, results) {
+    if (err) {
+      console.log("Error: " + err.message);
+      return;
+    }
+
+    if (results.affectedRows == 1) {
+      console.log("Successfully confirmed user!");
+      callback_success();
+    } else {
+      console.log("Could not confirm user!");
+      callback_failure();
+    }
+  });
+}
+
 Connection.prototype.init = function () {
   // create database if not exists
   //this.connection.query("CREATE DATABASE IF NOT EXISTS itmbin");

@@ -39,17 +39,42 @@ LoginController.prototype.handle = function(restUrl,res){
 			var auth_key = binhelper.getAuthKey();
 
 			// we use decodeURIComponent because for instance @ gets converted to %40.
-			var user_obj = [decodeURIComponent(restUrl.params.user_name), decodeURIComponent(restUrl.params.email), decodeURIComponent(restUrl.params.password_1), auth_key];
+			var uname = decodeURIComponent(restUrl.params.user_name);
+			var uemail = decodeURIComponent(restUrl.params.email);
+			var upassw = decodeURIComponent(restUrl.params.password_1);
+
+			var user_obj = [uname, uemail, upassw, auth_key];
 
 			conn.create();
 			conn.registerUser(user_obj, function () {
+				// generate confirmation link
+				var conf_link = "http://127.0.0.1:1337/login/confirm?mail=" + uemail + "&key=" + auth_key;
+
+				var mail_subject = "Registrierung bei ITM - Bin";
+				var mail_text = "";
+
+				mail_text = mail_text.replace(/{LOGIN}/g, uname)
+														.replace(/{CONFIRMATION_LINK}/g, conf_link);
+
 				// send confirmation mail
-				mail.sendMail(function() {}, "stifter.michael@gmx.net", "Test-Mail", "hallo hallo " + auth_key);
+				mail.sendMail(uemail, mail_subject, mail_text, function() {
+					// redirect to confirmation page
+
+
+				});
 			});
 			conn.close();
+	} else if (restUrl.id == "confirm") {
+			var mail = decodeURIComponent(restUrl.params.mail);
+			var auth_key = decodeURIComponent(restUrl.params.key);
+
+			// check database for matching mail / key combination
+			// set auth to 1
+
+			// redirect to successful registration page
 	} else if (restUrl.id == "check") {
 			console.log("Now we check the login")
-	} else{
+	} else {
 		console.log("DEBUG PageController handle: id unknown:",restUrl.id)
 		var msg="DEBUG PageController: id should be 'welcome' or 'about' or '...'."+
 				" We do not know how to handle '"+restUrl.id+"'!"

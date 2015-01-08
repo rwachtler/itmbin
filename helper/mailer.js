@@ -8,7 +8,7 @@ Mailer = function(){
 		port:25
 	}
 }
-Mailer.prototype.sendMail = function(callback,to,subject,message){
+Mailer.prototype.sendMail = function(to, subject, message, callback){
 	var transporter = nodemailer.createTransport( this.options );
 	console.log("Prepare to mail to '"+to+"'")
 	transporter.sendMail({ // in the background:
