@@ -25,14 +25,14 @@ Connection.prototype.close = function () {
   } )
 }
 
-Connection.prototype.getUsers = function () {
+Connection.prototype.getUsers = function (callback) {
   var sql = "SELECT * FROM users";
 
   this.connection.query(sql, function (err, rows) {
     if (err) {
       throw err;
     } else {
-      console.log(rows);
+      callback(rows);
     }
   });
 }
@@ -50,6 +50,8 @@ Connection.prototype.getUserByEmail = function (email) {
 }
 
 Connection.prototype.registerUser = function (user, callback) {
+  var connThis = this;
+
   this.connection.query("INSERT INTO users (user_name, email, pw, auth_key) VALUES (?, ?, ?, ?)", user, function(err, results) {
     if (err) {
       console.log("Error: " + err.message);
@@ -58,6 +60,8 @@ Connection.prototype.registerUser = function (user, callback) {
 
     console.log("Inserted " + results.affectedRows + " row.");
     console.log("Id inserted: " + results.insertId);
+
+    connThis.close();
 
     callback();
   });
@@ -80,6 +84,28 @@ Connection.prototype.confirmUser = function (user_data, callback_success, callba
   });
 }
 
+Connection.prototype.performLogin = function (login_data, callback_success, callback_failure) {
+    var connThis = this;
+    this.connection.query("SELECT id FROM users WHERE (user_name = ? OR email = ?) AND pw = ? AND auth = 1", login_data, function (err, results) {
+      if (err) {
+        console.log("Error: " + err.message);
+        return;
+      }
+
+      if (results.length > 0) {
+        console.log("Successfully logged in!");
+
+        // return user object of the logged-in user
+        callback_success(results[0]);
+      } else {
+        console.log("Could not log in!");
+        callback_failure();
+      }
+
+      //connThis.close();
+    });
+}
+
 Connection.prototype.init = function () {
   // create database if not exists
   //this.connection.query("CREATE DATABASE IF NOT EXISTS itmbin");
@@ -93,7 +119,7 @@ Connection.prototype.init = function () {
   this.connection.query("CREATE TABLE users ( id BIGINT AUTO_INCREMENT PRIMARY KEY, user_name VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, pw VARCHAR(255) NOT NULL, auth INT(1) UNSIGNED DEFAULT '0', auth_key VARCHAR(255) )");
   this.connection.query("ALTER TABLE users ADD UNIQUE unique_email (email)")
 
-  this.connection.query("INSERT INTO users (user_name, email, pw, auth, auth_key) VALUES ('test', 'michael@fh.at', 'test123', '1', 'abcdefghi')");
+  this.connection.query("INSERT INTO users (user_name, email, pw, auth, auth_key) VALUES ('test', 'michael@fh.at', 'test123', '0', 'abcdefghi')");
 }
 
 module.exports.Connection = Connection

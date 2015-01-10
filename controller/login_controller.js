@@ -63,8 +63,6 @@ LoginController.prototype.handle = function(restUrl,res,config){
 						mail_text = mail_text.replace(/{LOGIN}/g, uname)
 																.replace(/{CONFIRMATION_LINK}/g, conf_link);
 
-						console.log(mail_text);
-
 						// send confirmation mail
 						/*mail_sender.sendMail(uemail, mail_subject, mail_text, function() {
 							// redirect to confirmation page
@@ -80,24 +78,87 @@ LoginController.prototype.handle = function(restUrl,res,config){
 			var auth_mail = decodeURIComponent(restUrl.params.mail);
 			var auth_key = decodeURIComponent(restUrl.params.key);
 
-			// check database for matching mail / key combination
-			// set auth to 1
-
 			var user_data = [auth_mail, auth_key];
 
 			conn.create();
 			conn.confirmUser(user_data, function () {
-				// Success
 
+				conn.close();
+
+				// Success
+				var data = {
+						title: "ITM - Bin Confirmation successful",
+						success: 1
+					};
+
+					var theView = new PageView()
+					theView.render(res,restUrl, data)
 			}, function () {
 				// Failure
+				// redirect to not successful page
+				var data = {
+					title: "ITM - Bin Confirmation not successful",
+					success: 0
+				};
+
+				var theView = new PageView()
+				theView.render(res,restUrl, data)
+			});
+	} else if (restUrl.id == "auth") {
+			// check if login was valid
+			console.log(restUrl.params);
+
+
+			var entered_login = decodeURIComponent(restUrl.params.login);
+			var entered_pw = restUrl.params.password;
+
+			// entered_login is in there twice because we check for either user name or email address
+			var login_data = [entered_login, entered_login, entered_pw];
+
+			conn.create();
+			conn.performLogin(login_data, function (user) {
+				// Success
+				console.log(user);
+
+				var data = {
+						title: "ITM - Bin Login successful",
+						success: 1
+					};
+
+					var theView = new PageView()
+					theView.render(res,restUrl, data)
+			}, function () {
+				// Failure, redirect to unsuccessful login page
+				var data = {
+					title: "ITM - Bin Login not successful",
+					success: 0
+				};
+
+				var theView = new PageView()
+				theView.render(res,restUrl, data)
 			});
 
-			conn.close();
+	} else if (restUrl.id == "list") {
+			// save this object
+			var listThis = this;
 
-			// redirect to successful registration page
-	} else if (restUrl.id == "check") {
-			console.log("Now we check the login")
+			// get all users
+			conn.create();
+			conn.getUsers( function (users) {
+
+				conn.close();
+
+				// parse user list to table
+				var user_table = listThis.getUserListTable(users);
+
+				var data = {
+					title: "ITM - Bin User list",
+					user_list: user_table
+				};
+
+				var theView = new PageView()
+				theView.render(res,restUrl, data)
+			} );
 	} else {
 		console.log("DEBUG PageController handle: id unknown:",restUrl.id)
 		var msg="DEBUG PageController: id should be 'welcome' or 'about' or '...'."+
@@ -105,5 +166,42 @@ LoginController.prototype.handle = function(restUrl,res,config){
 	}
 
 }
+
+/**
+	Returns html table string of user_list array
+*/
+LoginController.prototype.getUserListTable = function (user_list) {
+	var html = "";
+
+	html += "<table>";
+
+	console.log(user_list);
+
+	// Table header
+	html += "<tr>";
+		html += "<th>Id</th>";
+		html += "<th>E-Mail</th>";
+		html += "<th>Login</th>";
+		html += "<th>Password</th>";
+		html += "<th>Authenticated</th>";
+		html += "<th>Authentication key</th>";
+	html += "</tr>";
+
+	for (var user in user_list) {
+		html += "<tr>";
+			html += "<td>" + user_list[user].id + "</td>";
+			html += "<td>" + user_list[user].email + "</td>";
+			html += "<td>" + user_list[user].user_name + "</td>";
+			html += "<td>" + user_list[user].pw + "</td>";
+			html += "<td>" + user_list[user].auth + "</td>";
+			html += "<td>" + user_list[user].auth_key + "</td>";
+		html += "</tr>";
+	}
+
+	html += "</table>";
+
+	return html;
+}
+
 var loginController = new LoginController()
 module.exports = loginController

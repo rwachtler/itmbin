@@ -7,6 +7,9 @@ var PageView = function(){
 	this.notfound_template	="view/page/notfound_template.html"
 	this.login_template = "view/login/login_template.html"
 	this.register_template = "view/login/register_template.html"
+	this.userlist_template = "view/login/userlist_template.html"
+	this.successful_template = "view/login/successful_template.html"
+	this.unsuccessful_template = "view/login/unsuccessful_template.html"
 }
 
 PageView.prototype.formatHtml = function(res,restUrl,data,htmlTemplate){
@@ -14,9 +17,10 @@ PageView.prototype.formatHtml = function(res,restUrl,data,htmlTemplate){
 
 	// TODO smarter replacement
 	if (data && data.title)
-			result=result.replace(/{TITLE}/g,data.title )
-						 .replace(/{ARTIST}/g,data.artist )
-						 .replace(/{COUNTER}/g,7 ) // TODO add more data :)
+			result=result.replace(/{TITLE}/g,data.title );
+
+	if (data && data.user_list)
+			result=result.replace(/{USER_LIST}/g,data.user_list );
 
 	// send html data back to client
 	res.writeHead(200, {'Content-Type': 'text/html'} );
@@ -34,6 +38,16 @@ PageView.prototype.getDetailTemplate = function(pageView, res,restUrl,data,layou
 		var filenameDetailTemplate = this.login_template
 	}else if (restUrl.id=="register"){
 		var filenameDetailTemplate = this.register_template
+	}else if (restUrl.id=="list"){
+		var filenameDetailTemplate = this.userlist_template
+	}else if (restUrl.id=="auth" || restUrl.id=="confirm"){
+		if (data.success !== undefined) {
+			if (data.success == 1) {
+				var filenameDetailTemplate = this.successful_template
+			} else {
+				var filenameDetailTemplate = this.unsuccessful_template
+			}
+		}
 	}else{
 		var filenameDetailTemplate = this.notfound_template
 	}
