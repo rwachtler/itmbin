@@ -1,0 +1,29 @@
+INSTALL.txt
+===========
+
+Before you can run this app 
+
+a) you might need some node modules installed:
+
+	So run following comman in the base directory:
+ 		npm install
+
+b) install and startup the Redis key/value store (our database)
+	e.g. brew install redis
+	then run command "redis-server"
+	
+	
+	
+To run this app 
+c1) in	production mode
+		./index.js
+		or
+		node index.js
+c2) in 	development mode (auto-restart on changed files)
+		 supervisor index.js 
+
+
+
+d) Test (with curl client) or 
+	try it in the browser and open URL:
+	http://localhost:1337

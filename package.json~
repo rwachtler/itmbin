@@ -1,0 +1,8 @@
+{
+	"name": 		"DynaWeb-Songs",
+	"version": 		"1.0.9", 
+	"dependencies":	{
+		"redis" 	: ">0.1",
+		"nodemailer": ">0.1" 
+	}
+}

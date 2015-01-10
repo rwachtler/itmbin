@@ -1,0 +1,7 @@
+{
+	"name": 		"ITM-Bin",
+	"version": 		"0.0.1",
+	"dependencies":	{
+		"nodemailer": ">0.1"
+	}
+}
