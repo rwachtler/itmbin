@@ -50,8 +50,6 @@ Connection.prototype.getUserByEmail = function (email) {
 }
 
 Connection.prototype.registerUser = function (user, callback) {
-  var connThis = this;
-
   this.connection.query("INSERT INTO users (user_name, email, pw, auth_key) VALUES (?, ?, ?, ?)", user, function(err, results) {
     if (err) {
       console.log("Error: " + err.message);
@@ -60,8 +58,6 @@ Connection.prototype.registerUser = function (user, callback) {
 
     console.log("Inserted " + results.affectedRows + " row.");
     console.log("Id inserted: " + results.insertId);
-
-    connThis.close();
 
     callback();
   });
@@ -85,7 +81,6 @@ Connection.prototype.confirmUser = function (user_data, callback_success, callba
 }
 
 Connection.prototype.performLogin = function (login_data, callback_success, callback_failure) {
-    var connThis = this;
     this.connection.query("SELECT id FROM users WHERE (user_name = ? OR email = ?) AND pw = ? AND auth = 1", login_data, function (err, results) {
       if (err) {
         console.log("Error: " + err.message);
@@ -101,8 +96,6 @@ Connection.prototype.performLogin = function (login_data, callback_success, call
         console.log("Could not log in!");
         callback_failure();
       }
-
-      //connThis.close();
     });
 }
 

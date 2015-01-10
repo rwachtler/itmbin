@@ -108,9 +108,8 @@ LoginController.prototype.handle = function(restUrl,res,config){
 			// check if login was valid
 			console.log(restUrl.params);
 
-
 			var entered_login = decodeURIComponent(restUrl.params.login);
-			var entered_pw = restUrl.params.password;
+			var entered_pw = decodeURIComponent(restUrl.params.password);
 
 			// entered_login is in there twice because we check for either user name or email address
 			var login_data = [entered_login, entered_login, entered_pw];
