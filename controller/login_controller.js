@@ -22,10 +22,13 @@ var LoginController = function(){
 
 }
 
-LoginController.prototype.handle = function(restUrl,res,config){
+LoginController.prototype.handle = function(restUrl,res,config,session_id,sessMgmt){
 
 	// PUT http://localhost:8888/song/1.json?title=Unten%20am%20Hafen&lang=de
 	// => method = PUT path = / resource = song id = 1 format = json params = { 'title' : "Unten am Hafen", 'lang': "de"}
+
+	var session	= sessMgmt.getOrCreateSession(session_id,restUrl.params);
+
 
 
 	if (restUrl.id == "login"){
@@ -69,11 +72,19 @@ LoginController.prototype.handle = function(restUrl,res,config){
 							console.log("redirecting to confirmation page...");
 
 						});*/
+
+						// show please confirm via email page
+						var data = {
+								title: "ITM - Bin Confirmation successful",
+								success: 1
+							};
+
+							var theView = new PageView()
+							theView.render(res,restUrl, data)
 					}else
 						returnErr(res,"Error reading mail template file: " + err);
 				});
 			});
-			conn.close();
 	} else if (restUrl.id == "confirm") {
 			var auth_mail = decodeURIComponent(restUrl.params.mail);
 			var auth_key = decodeURIComponent(restUrl.params.key);
@@ -82,8 +93,6 @@ LoginController.prototype.handle = function(restUrl,res,config){
 
 			conn.create();
 			conn.confirmUser(user_data, function () {
-
-				conn.close();
 
 				// Success
 				var data = {
@@ -106,8 +115,6 @@ LoginController.prototype.handle = function(restUrl,res,config){
 			});
 	} else if (restUrl.id == "auth") {
 			// check if login was valid
-			console.log(restUrl.params);
-
 			var entered_login = decodeURIComponent(restUrl.params.login);
 			var entered_pw = decodeURIComponent(restUrl.params.password);
 
@@ -115,9 +122,14 @@ LoginController.prototype.handle = function(restUrl,res,config){
 			var login_data = [entered_login, entered_login, entered_pw];
 
 			conn.create();
-			conn.performLogin(login_data, function (user) {
+			conn.performLogin(login_data, function (user_) {
 				// Success
-				console.log(user);
+				console.log(user_);
+
+				// set the user as the user for this session
+				var session	= sessMgmt.getOrCreateSession(session_id,restUrl.params)
+
+				session.user = user_;
 
 				var data = {
 						title: "ITM - Bin Login successful",
@@ -145,19 +157,29 @@ LoginController.prototype.handle = function(restUrl,res,config){
 			conn.create();
 			conn.getUsers( function (users) {
 
-				conn.close();
-
 				// parse user list to table
 				var user_table = listThis.getUserListTable(users);
 
 				var data = {
 					title: "ITM - Bin User list",
-					user_list: user_table
+					user_list: user_table,
+					login: sessMgmt.getLoginHtml(session.user)
 				};
 
 				var theView = new PageView()
 				theView.render(res,restUrl, data)
 			} );
+	} else if (restUrl.id == "logout") {
+		// reset session.user so user is logged out
+		session.user = null;
+
+		var data = {
+				title: "ITM - Bin Logout successful",
+				success: 1
+			};
+
+			var theView = new PageView()
+			theView.render(res,restUrl, data)
 	} else {
 		console.log("DEBUG PageController handle: id unknown:",restUrl.id)
 		var msg="DEBUG PageController: id should be 'welcome' or 'about' or '...'."+

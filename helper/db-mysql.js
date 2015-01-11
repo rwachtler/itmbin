@@ -81,7 +81,7 @@ Connection.prototype.confirmUser = function (user_data, callback_success, callba
 }
 
 Connection.prototype.performLogin = function (login_data, callback_success, callback_failure) {
-    this.connection.query("SELECT id FROM users WHERE (user_name = ? OR email = ?) AND pw = ? AND auth = 1", login_data, function (err, results) {
+    this.connection.query("SELECT id, user_name, email FROM users WHERE (user_name = ? OR email = ?) AND pw = ? AND auth = 1", login_data, function (err, results) {
       if (err) {
         console.log("Error: " + err.message);
         return;

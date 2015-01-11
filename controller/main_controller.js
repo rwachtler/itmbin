@@ -21,6 +21,8 @@ var binhelper = new ItmBin.ItmBin();
 
 var restRouting = function(req,res,restUrl){
 
+	sessMgmt.log();
+
 	// get or create a session from SessionManagement
 	var cookies 	= sessMgmt.extractCookiesFromRequest(req)
 	var session_id	= sessMgmt.getSessionId(cookies);
@@ -28,7 +30,11 @@ var restRouting = function(req,res,restUrl){
 	sessMgmt.updateTheResponseHeaders(cookies,session,res)
 
 	// get current User from Session
-	// var user = session.findUserById()
+	if (session.user === null) {
+		console.log("No user logged in");
+	} else {
+		console.log("User in this session: " + session.user['user_name']);
+	}
 
   // routing section
   console.log("Routing: we analyse url and return 'something' for restUrl: ", restUrl);
@@ -53,7 +59,7 @@ var restRouting = function(req,res,restUrl){
 		break;
 	case 'login':
 		var loginController = require('./login_controller')
-		loginController.handle(restUrl, res, config)
+		loginController.handle(restUrl, res, config, session_id, sessMgmt)
 		break;
 	default:
 		// unknown filename/path/id/format:
