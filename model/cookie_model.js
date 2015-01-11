@@ -1,7 +1,7 @@
 function Cookie(name,v){	
 	this.name=name
 	this.value=v
-	this.maxage=null; //60*60*3 // 60 sec * 60 min => 3h
+	this.maxage=60 * 60 * 3; //60*60*3 // 60 sec * 60 min => 3h
 	var expireOn = new Date()
 	expireOn.setDate( expireOn.getDate() + 3) // expire in three days
 	this.expires=expireOn.toUTCString() // "Mon, 31-Dec-2035 23:00:01 GMT"

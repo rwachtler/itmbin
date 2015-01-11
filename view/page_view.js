@@ -19,6 +19,10 @@ PageView.prototype.formatHtml = function(res,restUrl,data,htmlTemplate){
 	if (data && data.title)
 			result=result.replace(/{TITLE}/g,data.title );
 
+	// Replace "eingeloggt als..."
+	var login_html = data.login || "";
+	result = result.replace(/{LOGIN}/g, login_html);
+
 	if (data && data.user_list)
 			result=result.replace(/{USER_LIST}/g,data.user_list );
 
@@ -40,7 +44,7 @@ PageView.prototype.getDetailTemplate = function(pageView, res,restUrl,data,layou
 		var filenameDetailTemplate = this.register_template
 	}else if (restUrl.id=="list"){
 		var filenameDetailTemplate = this.userlist_template
-	}else if (restUrl.id=="auth" || restUrl.id=="confirm"){
+	}else if (restUrl.id=="auth" || restUrl.id=="confirm" || restUrl.id=="logout" || restUrl.id=="save"){
 		if (data.success !== undefined) {
 			if (data.success == 1) {
 				var filenameDetailTemplate = this.successful_template
