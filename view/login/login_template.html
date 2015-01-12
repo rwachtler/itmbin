@@ -1,17 +1,50 @@
-<form id="login_form" method="post" action="/login/auth">
-	<div>
-		Login: <input type="text" name="login" id="login" placeholder="User name or e-mail address" />
-	</div>
+<div class="form-wrapper">
+	<div class="form-head"><h1>ITMbin</h1></div>
+	<div class="row">
+		<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+			<div class="form-body">
+				<h1>Login</h1>
+				<form id="login_form" method="post" action="/login/auth">
+					<div>
+						<label for="login">Username</label>
+						<input type="text" name="login" id="login" placeholder="User name or e-mail address" />
+					</div>
 
-	<div>
-		Password: <input type="password" name="password" id="password" />
-	</div>
+					<div>
+						<label for="password">Password</label>
+						<input type="password" name="password" placeholder="******" id="password" />
+					</div>
 
-	<div>
-		<input type="submit" value="Login" />
-	</div>
+					<div>
+						<input type="submit" value="Login" />
+					</div>
+				</form>
+			</div>
+		</div>
+		<div id="separator"></div>
+		<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+			<div class="form-body">
+				<h1>Signup</h1>
+				<form id="signup_form" method="post" action="/login/auth">
+					<div>
+						<label for="new_user">Username</label>
+						<input type="text" name="new_login" id="new_user" placeholder="User name or e-mail address" />
+					</div>
 
-	<div>
-		Not registered yet? <a href="/login/register">You can do that here</a>
+					<div>
+						<label for="new_pass">Password</label>
+						<input type="password" name="new_password" placeholder="******" id="new_pass" />
+					</div>
+					<div>
+						<label for="new_pass_c">Confirm your password</label>
+						<input type="password" name="conf_pass" placeholder="******" id="new_pass_c" />
+					</div>
+					<div>
+						<input type="submit" value="Login" />
+					</div>
+				</form>
+			</div>
+		</div>
 	</div>
-</form>
+</div>
+
