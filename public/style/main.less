@@ -31,6 +31,9 @@ div{
     height:auto;
     background: @lightgray;
     position: relative;
+    @media all and(max-width:768px){
+      width:95%;
+    }
   }
   &.form-head{
 
@@ -70,6 +73,9 @@ div{
     width:1px;
     background:@darkgray;
     left:50%;
+    @media all and (max-width:992px){
+      display:none;
+    }
   }
 }
 footer{
