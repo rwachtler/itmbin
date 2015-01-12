@@ -31,6 +31,11 @@ div.form-wrapper {
   background: #e6e6e6;
   position: relative;
 }
+@media all and (max-width: 768px) {
+  div.form-wrapper {
+    width: 95%;
+  }
+}
 div.form-head {
   font-family: 'Changa One', cursive;
   background: #2ecc71;
@@ -69,6 +74,11 @@ div#separator {
   width: 1px;
   background: #646464;
   left: 50%;
+}
+@media all and (max-width: 992px) {
+  div#separator {
+    display: none;
+  }
 }
 footer {
   text-align: center;
