@@ -20,8 +20,37 @@ h1,h2,h3,h4,p{
 }
 a{
   color: @emerald;
+  cursor: pointer;
+}
+nav{
+  width:100%;
+  background:@emerald;
+  h1{
+    font-family: @changa;
+    color:@white;
+    margin-top:10px;
+  }
+  ul{
+    margin-top:20px;
+    li{
+      list-style: none;
+      display: inline;
+      a{
+        color:@white;
+      }
+    }
+  }
 }
 div{
+  &#togetherjs-dock{
+    background:@emerald;
+  }
+  &.brand{
+    padding:0px 10px 0px 10px;
+  }
+  &.userinfo{
+    margin-top:20px;
+  }
   font-family: @lato;
   &.form-wrapper{
     margin-top:200px;

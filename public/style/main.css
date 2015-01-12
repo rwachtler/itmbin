@@ -18,9 +18,38 @@ p {
 }
 a {
   color: #2ecc71;
+  cursor: pointer;
+}
+nav {
+  width: 100%;
+  background: #2ecc71;
+}
+nav h1 {
+  font-family: 'Changa One', cursive;
+  color: #ffffff;
+  margin-top: 10px;
+}
+nav ul {
+  margin-top: 20px;
+}
+nav ul li {
+  list-style: none;
+  display: inline;
+}
+nav ul li a {
+  color: #ffffff;
 }
 div {
   font-family: 'Lato', sans-serif;
+}
+div#togetherjs-dock {
+  background: #2ecc71;
+}
+div.brand {
+  padding: 0px 10px 0px 10px;
+}
+div.userinfo {
+  margin-top: 20px;
 }
 div.form-wrapper {
   margin-top: 200px;
