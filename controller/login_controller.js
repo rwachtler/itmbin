@@ -42,11 +42,11 @@ LoginController.prototype.handle = function(restUrl,res,config,session_id,sessMg
 		var theView = new PageView()
 		theView.render(res,restUrl, data)
 	} else if (restUrl.id == "save") {
-			if (restUrl.params.user_name !== undefined) {
+			if (restUrl.params.new_user !== undefined) {
 				// we use decodeURIComponent because for instance @ gets converted to %40.
-				var uname = decodeURIComponent(restUrl.params.user_name);
-				var uemail = decodeURIComponent(restUrl.params.email);
-				var upassw = decodeURIComponent(restUrl.params.password_1);
+				var uname = decodeURIComponent(restUrl.params.new_user);
+				var uemail = decodeURIComponent(restUrl.params.new_email);
+				var upassw = decodeURIComponent(restUrl.params.new_pass);
 
 				// save the registration and send confirmation mail
 				var auth_key = binhelper.getAuthKey();
