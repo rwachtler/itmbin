@@ -4,3 +4,6 @@
 /login/register				         registration page
 /login/save						         saves registration details and sends a confirmation mail
 /login/confirm?mail&auth_key	 confirm registration, user can now log in
+
+/page/main                     main page
+/page/welcome                  welcome page after successful registration
