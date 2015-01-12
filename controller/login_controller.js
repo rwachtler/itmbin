@@ -42,49 +42,60 @@ LoginController.prototype.handle = function(restUrl,res,config,session_id,sessMg
 		var theView = new PageView()
 		theView.render(res,restUrl, data)
 	} else if (restUrl.id == "save") {
-			// save the registration and send confirmation mail
-			var auth_key = binhelper.getAuthKey();
+			if (restUrl.params.user_name !== undefined) {
+				// we use decodeURIComponent because for instance @ gets converted to %40.
+				var uname = decodeURIComponent(restUrl.params.user_name);
+				var uemail = decodeURIComponent(restUrl.params.email);
+				var upassw = decodeURIComponent(restUrl.params.password_1);
 
-			// we use decodeURIComponent because for instance @ gets converted to %40.
-			var uname = decodeURIComponent(restUrl.params.user_name);
-			var uemail = decodeURIComponent(restUrl.params.email);
-			var upassw = decodeURIComponent(restUrl.params.password_1);
+				// save the registration and send confirmation mail
+				var auth_key = binhelper.getAuthKey();
 
-			var user_obj = [uname, uemail, upassw, auth_key];
+				var user_obj = [uname, uemail, upassw, auth_key];
 
-			conn.create();
-			conn.registerUser(user_obj, function () {
-				// read mail template
-				fs.readFile(mailTemplateFile, function(err, filedata){
-					if (err === null ){
-						// generate confirmation link
-						var conf_link = "http://" + config.server + ":" + config.port + "/login/confirm?mail=" + uemail + "&key=" + auth_key;
+				conn.create();
+				conn.registerUser(user_obj, function () {
+					// read mail template
+					fs.readFile(mailTemplateFile, function(err, filedata){
+						if (err === null ){
+							// generate confirmation link
+							var conf_link = "http://" + config.server + ":" + config.port + "/login/confirm?mail=" + uemail + "&key=" + auth_key;
 
-						var mail_subject = "Registrierung bei ITM - Bin";
-						var mail_text = filedata.toString('UTF-8');
+							var mail_subject = "Registrierung bei ITM - Bin";
+							var mail_text = filedata.toString('UTF-8');
 
-						mail_text = mail_text.replace(/{LOGIN}/g, uname)
-																.replace(/{CONFIRMATION_LINK}/g, conf_link);
+							mail_text = mail_text.replace(/{LOGIN}/g, uname)
+																	.replace(/{CONFIRMATION_LINK}/g, conf_link);
 
-						// send confirmation mail
-						/*mail_sender.sendMail(uemail, mail_subject, mail_text, function() {
-							// redirect to confirmation page
-							console.log("redirecting to confirmation page...");
+							// send confirmation mail
+							/*mail_sender.sendMail(uemail, mail_subject, mail_text, function() {
+								// redirect to confirmation page
+								console.log("redirecting to confirmation page...");
 
-						});*/
+							});*/
 
-						// show please confirm via email page
-						var data = {
-								title: "ITM - Bin Confirmation successful",
-								success: 1
-							};
+							// show please confirm via email page
+							var data = {
+									title: "ITM - Bin Confirmation successful",
+									success: 1
+								};
 
-							var theView = new PageView()
-							theView.render(res,restUrl, data)
-					}else
-						returnErr(res,"Error reading mail template file: " + err);
+								var theView = new PageView()
+								theView.render(res,restUrl, data)
+						}else
+							returnErr(res,"Error reading mail template file: " + err);
+					});
 				});
-			});
+			} else {
+				// no valid post params --> unsuccessful page
+				var data = {
+						title: "ITM - Bin",
+						success: 0
+					};
+
+					var theView = new PageView()
+					theView.render(res,restUrl, data)
+			}
 	} else if (restUrl.id == "confirm") {
 			var auth_mail = decodeURIComponent(restUrl.params.mail);
 			var auth_key = decodeURIComponent(restUrl.params.key);

@@ -51,7 +51,7 @@ var restRouting = function(req,res,restUrl){
 		break;
 	case 'page':
   		var pageController = require('./page_controller')
-		pageController.handle(restUrl,res)
+		pageController.handle(restUrl, res, session_id, sessMgmt)
 		break;
 	case 'testing':
 		var testingController = require('./testing_controller')

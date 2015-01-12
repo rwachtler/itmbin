@@ -2,12 +2,14 @@ fs=require("fs")
 var PageView = function(){
 	console.log("DEBUG PageView initialise...")
 	this.layout="view/layout.html"
+	this.main_template = "view/page/main_template.html"
 	this.welcome_template	="view/page/welcome_template.html"
 	this.about_template		="view/page/about_template.html"
 	this.notfound_template	="view/page/notfound_template.html"
 	this.login_template = "view/login/login_template.html"
 	this.register_template = "view/login/register_template.html"
 	this.userlist_template = "view/login/userlist_template.html"
+	this.after_register_template = "view/login/after_registration_template.html"
 	this.successful_template = "view/login/successful_template.html"
 	this.unsuccessful_template = "view/login/unsuccessful_template.html"
 }
@@ -20,7 +22,7 @@ PageView.prototype.formatHtml = function(res,restUrl,data,htmlTemplate){
 			result=result.replace(/{TITLE}/g,data.title );
 
 	// Replace "eingeloggt als..."
-	var login_html = data.login || "";
+	var login_html = data && data.login ? data.login || "" : "";
 	result = result.replace(/{LOGIN}/g, login_html);
 
 	if (data && data.user_list)
@@ -36,6 +38,8 @@ PageView.prototype.getDetailTemplate = function(pageView, res,restUrl,data,layou
 	var format = restUrl.format
 	if (restUrl.id=="welcome"){
 		var filenameDetailTemplate = this.welcome_template
+	}else if (restUrl.id=="main"){
+		var filenameDetailTemplate = this.main_template
 	}else if (restUrl.id=="about"){
 		var filenameDetailTemplate = this.about_template
 	}else if (restUrl.id=="login"){
@@ -44,7 +48,13 @@ PageView.prototype.getDetailTemplate = function(pageView, res,restUrl,data,layou
 		var filenameDetailTemplate = this.register_template
 	}else if (restUrl.id=="list"){
 		var filenameDetailTemplate = this.userlist_template
-	}else if (restUrl.id=="auth" || restUrl.id=="confirm" || restUrl.id=="logout" || restUrl.id=="save"){
+	}else if (restUrl.id=="save"){
+		if (data && data.success !== undefined && data.success == 1) {
+			var filenameDetailTemplate = this.after_register_template
+		} else {
+			var filenameDetailTemplate = this.unsuccessful_template
+		}
+	}else if (restUrl.id=="auth" || restUrl.id=="confirm" || restUrl.id=="logout"){
 		if (data.success !== undefined) {
 			if (data.success == 1) {
 				var filenameDetailTemplate = this.successful_template
