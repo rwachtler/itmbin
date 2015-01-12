@@ -1,0 +1,21 @@
+{
+  "name" : "ITMbin",
+  "version": "0.1",
+  "dependencies" : {
+    "normalize.css" : "latest",
+    "bootstrap" : "latest"
+  },
+  "install" : {
+    "path" : {
+      "css": "style",
+      "min.css": "style",
+      "js": "js",
+      "min.js": "js",
+      "less": "style",
+      "eot": "style/fonts",
+      "svg": "style/fonts",
+      "ttf": "style/fonts",
+      "woff": "style/fonts"
+    }
+  }
+}
