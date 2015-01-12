@@ -25,7 +25,7 @@ StaticFilesController.prototype.handle = function(restUrl,res){
 				res.writeHead(200, {'Content-Type': 'image/jpeg'} );
 				res.end(filedata);
 			}else if ( restUrl.format.indexOf('m4a')>=0 ){
-				// TODO: streaming... 
+				// TODO: streaming...
 				res.writeHead(200, {'Content-Type': 'audio/m4a'} );
 				res.end(filedata);
 			}else if (restUrl.format.indexOf('htm')>=0) {
@@ -34,8 +34,11 @@ StaticFilesController.prototype.handle = function(restUrl,res){
 			}else if (restUrl.format.indexOf('js')>=0) {
 				res.writeHead(200, {'Content-Type': 'text/javascript'} );
 				res.end( filedata.toString('UTF-8') );
+			}else if (restUrl.format.indexOf('css')>=0) {
+				res.writeHead(200, {'Content-Type': 'text/css'} );
+				res.end( filedata.toString('UTF-8') );
 			}else
-				returnErr(res,"Unsupported file type: '"+restUrl.format+"'")			
+				returnErr(res,"Unsupported file type: '"+restUrl.format+"'")
 		}else
 			returnErr(res,"Error reading file '"+filename+"': "+err);
 		}
@@ -49,5 +52,5 @@ module.exports = staticFileController
 StaticFilesController.prototype.returnErr = function(res,msg){
 	console.log("DEBUG: serving static files "+msg)
   	res.writeHead(503, {'Content-Type': 'text/plain'});
-  	res.end("ERROR: '"+msg+"'\n");	
+  	res.end("ERROR: '"+msg+"'\n");
 }
