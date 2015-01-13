@@ -182,3 +182,14 @@ div#separator {
 footer {
   text-align: center;
 }
+div.user-list{
+  width: 75%;
+}
+table th, td{
+  border-top: solid 1px;
+  border-color: #262626;
+  padding: 5px;
+}
+table{
+  margin:auto;
+}
