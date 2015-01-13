@@ -68,10 +68,11 @@ div#start {
   box-shadow: 5px 5px 10px #000000;
   margin-top: 10%;
   background: #2ecc71;
-  height: 50%;
+  height: auto;
   width: 60%;
   margin-left: auto;
   margin-right: auto;
+  padding-bottom: 100px;
 }
 div#start h1 {
   color: #ffffff;
