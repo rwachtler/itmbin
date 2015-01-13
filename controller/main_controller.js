@@ -45,13 +45,16 @@ var restRouting = function(req,res,restUrl){
 		var staticFileController = require('./static_files_controller')
 		staticFileController.handle(restUrl,res)
 	  	break;
-	case 'song':
-  		var songController = require('./song_controller')
-		songController.handle(restUrl,res)
-		break;
 	case 'page':
-  		var pageController = require('./page_controller')
-		pageController.handle(restUrl, res, session_id, sessMgmt)
+		// you can't view /page/main when you are not logged in!
+		if (session.user === null && restUrl.id == "main") {
+			var staticFileController = require('./static_files_controller')
+			staticFileController.handle(restUrl,res,"not_logged_in")
+		} else {
+			var pageController = require('./page_controller')
+			pageController.handle(restUrl, res, session_id, sessMgmt)
+		}
+
 		break;
 	case 'testing':
 		var testingController = require('./testing_controller')
@@ -62,9 +65,12 @@ var restRouting = function(req,res,restUrl){
 		loginController.handle(restUrl, res, config, session_id, sessMgmt)
 		break;
 	default:
-		// unknown filename/path/id/format:
-		res.writeHead(400, {'Content-Type': 'text/plain'});
-		res.end('We will NOT return the "unknown" resource "'+restUrl.filename+'" with path="'+restUrl.path+'", id="'+restUrl.id+'" and type="'+restUrl.format+'" !\n');
+		/*res.writeHead(400, {'Content-Type': 'text/plain'});
+		res.end('We will NOT return the "unknown" resource "'+restUrl.filename+'" with path="'+restUrl.path+'", id="'+restUrl.id+'" and type="'+restUrl.format+'" !\n');*/
+
+		// unknown filename/path/id/format --> redirct to oops page
+		var staticFileController = require('./static_files_controller')
+		staticFileController.handle(restUrl,res,"oops")
   }
 }
 

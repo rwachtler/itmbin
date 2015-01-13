@@ -14,8 +14,12 @@ PageController.prototype.handle = function(restUrl,res,session_id,sessMgmt){
 	var session	= sessMgmt.getOrCreateSession(session_id,restUrl.params);
 
 	if (restUrl.id == "welcome"){
+		var data = {
+			title: "Welcome to ITM - Bin!"
+		};
+
 		var theView = new PageView()
-		theView.render(res,restUrl)
+		theView.render(res,restUrl,data)
 	}else if (restUrl.id == 'main'){
 		var data = {
 			title: "ITM - Bin Main page",
@@ -28,9 +32,13 @@ PageController.prototype.handle = function(restUrl,res,session_id,sessMgmt){
 		var theView = new PageView()
 		theView.render(res,restUrl)
 	}else{
-		console.log("DEBUG PageController handle: id unknown:",restUrl.id)
+		/*console.log("DEBUG PageController handle: id unknown:",restUrl.id)
 		var msg="DEBUG PageController: id should be 'main', 'welcome' or 'about' or '...'."+
-				" We do not know how to handle '"+restUrl.id+"'!"
+				" We do not know how to handle '"+restUrl.id+"'!"*/
+				
+		// return oops page
+		var staticFileController = require('./static_files_controller')
+		staticFileController.handle(restUrl,res,"oops")
 	}
 
 }

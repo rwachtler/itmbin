@@ -1,7 +1,10 @@
 var mysql = require('mysql');
+var bcrypt = require('bcrypt');
 
 Connection = function () {
   this.connection = null;
+
+  this.salt = "$2a$10$77bT6JnjLBhcGKoouwZCXe";
 }
 
 Connection.prototype.create = function () {
@@ -50,16 +53,23 @@ Connection.prototype.getUserByEmail = function (email) {
 }
 
 Connection.prototype.registerUser = function (user, callback) {
-  this.connection.query("INSERT INTO users (user_name, email, pw, auth_key) VALUES (?, ?, ?, ?)", user, function(err, results) {
-    if (err) {
-      console.log("Error: " + err.message);
-      return;
-    }
+  var regThis = this;
 
-    console.log("Inserted " + results.affectedRows + " row.");
-    console.log("Id inserted: " + results.insertId);
+  bcrypt.hash(user[2], regThis.salt, function (err, hash) {
+      // replace clear-text password with hash
+      user[2] = hash;
 
-    callback();
+      regThis.connection.query("INSERT INTO users (user_name, email, pw, auth_key) VALUES (?, ?, ?, ?)", user, function(err, results) {
+        if (err) {
+          console.log("Error: " + err.message);
+          return;
+        }
+
+        console.log("Inserted " + results.affectedRows + " row.");
+        console.log("Id inserted: " + results.insertId);
+
+        callback();
+      });
   });
 }
 
@@ -81,27 +91,34 @@ Connection.prototype.confirmUser = function (user_data, callback_success, callba
 }
 
 Connection.prototype.performLogin = function (login_data, callback_success, callback_failure) {
-    this.connection.query("SELECT id, user_name, email FROM users WHERE (user_name = ? OR email = ?) AND pw = ? AND auth = 1", login_data, function (err, results) {
-      if (err) {
-        console.log("Error: " + err.message);
-        return;
-      }
+    perfThis = this;
 
-      if (results.length > 0) {
-        console.log("Successfully logged in!");
+    bcrypt.hash(login_data[2], perfThis.salt, function (err, hash) {
+      // replace input password with hash
+      login_data[2] = hash;
 
-        // return user object of the logged-in user
-        callback_success(results[0]);
-      } else {
-        console.log("Could not log in!");
-        callback_failure();
-      }
+      perfThis.connection.query("SELECT id, user_name, email FROM users WHERE (user_name = ? OR email = ?) AND pw = ? AND auth = 1", login_data, function (err, results) {
+        if (err) {
+          console.log("Error: " + err.message);
+          return;
+        }
+
+        if (results.length > 0) {
+          console.log("Successfully logged in!");
+
+          // return user object of the logged-in user
+          callback_success(results[0]);
+        } else {
+          console.log("Could not log in!");
+          callback_failure();
+        }
+      });
     });
 }
 
 Connection.prototype.init = function () {
   // create database if not exists
-  //this.connection.query("CREATE DATABASE IF NOT EXISTS itmbin");
+  this.connection.query("CREATE DATABASE IF NOT EXISTS itmbin");
 
   // use database
   this.connection.query("USE itmbin");
@@ -112,7 +129,11 @@ Connection.prototype.init = function () {
   this.connection.query("CREATE TABLE users ( id BIGINT AUTO_INCREMENT PRIMARY KEY, user_name VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, pw VARCHAR(255) NOT NULL, auth INT(1) UNSIGNED DEFAULT '0', auth_key VARCHAR(255) )");
   this.connection.query("ALTER TABLE users ADD UNIQUE unique_email (email)")
 
-  this.connection.query("INSERT INTO users (user_name, email, pw, auth, auth_key) VALUES ('test', 'michael@fh.at', 'test123', '0', 'abcdefghi')");
+  // Add test user with login: test and password: test123
+  var initThis = this;
+  bcrypt.hash("test123", this.salt, function (err, hash) {
+    initThis.connection.query("INSERT INTO users (user_name, email, pw, auth, auth_key) VALUES ('test', 'michael@fh.at', '" + hash + "', '1', '')");
+  });
 }
 
 module.exports.Connection = Connection
