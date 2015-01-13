@@ -134,10 +134,13 @@ LoginController.prototype.handle = function(restUrl,res,config,session_id,sessMg
 
 				session.user = user_;
 
+
 				var data = {
 						title: "ITM - Bin Login successful",
 						success: 1
+
 					};
+
 
 					var theView = new PageView()
 					theView.render(res,restUrl, data)
