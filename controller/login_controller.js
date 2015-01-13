@@ -36,11 +36,6 @@ LoginController.prototype.handle = function(restUrl,res,config,session_id,sessMg
 
 		var theView = new PageView()
 		theView.render(res,restUrl, data)
-	} else if (restUrl.id == "register") {
-		var data = { title: "ITM - Bin Register"};
-
-		var theView = new PageView()
-		theView.render(res,restUrl, data)
 	} else if (restUrl.id == "save") {
 			if (restUrl.params.new_user !== undefined) {
 				// we use decodeURIComponent because for instance @ gets converted to %40.
@@ -195,6 +190,10 @@ LoginController.prototype.handle = function(restUrl,res,config,session_id,sessMg
 		console.log("DEBUG PageController handle: id unknown:",restUrl.id)
 		var msg="DEBUG PageController: id should be 'welcome' or 'about' or '...'."+
 				" We do not know how to handle '"+restUrl.id+"'!"
+
+		// return oops page
+		var staticFileController = require('./static_files_controller')
+		staticFileController.handle(restUrl,res,"oops")
 	}
 
 }

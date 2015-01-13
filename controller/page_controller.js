@@ -14,8 +14,12 @@ PageController.prototype.handle = function(restUrl,res,session_id,sessMgmt){
 	var session	= sessMgmt.getOrCreateSession(session_id,restUrl.params);
 
 	if (restUrl.id == "welcome"){
+		var data = {
+			title: "Welcome to ITM - Bin!"
+		};
+
 		var theView = new PageView()
-		theView.render(res,restUrl)
+		theView.render(res,restUrl,data)
 	}else if (restUrl.id == 'main'){
 		var data = {
 			title: "ITM - Bin Main page",

@@ -44,8 +44,6 @@ PageView.prototype.getDetailTemplate = function(pageView, res,restUrl,data,layou
 		var filenameDetailTemplate = this.about_template
 	}else if (restUrl.id=="login"){
 		var filenameDetailTemplate = this.login_template
-	}else if (restUrl.id=="register"){
-		var filenameDetailTemplate = this.register_template
 	}else if (restUrl.id=="list"){
 		var filenameDetailTemplate = this.userlist_template
 	}else if (restUrl.id=="save"){
