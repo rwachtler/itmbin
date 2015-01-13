@@ -45,10 +45,6 @@ var restRouting = function(req,res,restUrl){
 		var staticFileController = require('./static_files_controller')
 		staticFileController.handle(restUrl,res)
 	  	break;
-	case 'song':
-  		var songController = require('./song_controller')
-		songController.handle(restUrl,res)
-		break;
 	case 'page':
 		// you can't view /page/main when you are not logged in!
 		if (session.user === null && restUrl.id == "main") {
