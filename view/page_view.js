@@ -25,6 +25,12 @@ PageView.prototype.formatHtml = function(res,restUrl,data,htmlTemplate){
 	var login_html = data && data.login ? data.login || "" : "";
 	result = result.replace(/{LOGIN}/g, login_html);
 
+	if (data && data.message_title) {
+		result = result.replace(/{JS}/g, data.js)
+									 .replace(/{MESSAGE_TITLE}/g, data.message_title)
+									 .replace(/{MESSAGE_CONTENT}/g, data.message_content);
+	}
+
 	if (data && data.user_list)
 			result=result.replace(/{USER_LIST}/g,data.user_list );
 
@@ -56,11 +62,19 @@ PageView.prototype.getDetailTemplate = function(pageView, res,restUrl,data,layou
 		if (data && data.success !== undefined && data.success == 1) {
 			// means that login was successful --> user will be redirected to /page/main via successful_template
 			var filenameDetailTemplate = this.successful_template
+			data.js = "window.location='/page/main';";
+			data.message_title = "You are now logged in!";
+			data.message_content = "You will be redirected to the <a href=\"/page/main\">main page</a>.";
 		} else {
 			var filenameDetailTemplate = this.unsuccessful_template
 		}
 
-	}else if (restUrl.id=="confirm" || restUrl.id=="logout"){
+	}else if (restUrl.id=="logout"){
+			var filenameDetailTemplate = this.successful_template
+			data.js = "";
+			data.message_title = "You are now logged out!";
+			data.message_content = "If you want, you can go back to the <a href=\"/login/login\">login page</a>.";
+	}else if (restUrl.id=="confirm"){
 		if (data.success !== undefined) {
 			if (data.success == 1) {
 				var filenameDetailTemplate = this.successful_template
