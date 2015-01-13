@@ -52,7 +52,15 @@ PageView.prototype.getDetailTemplate = function(pageView, res,restUrl,data,layou
 		} else {
 			var filenameDetailTemplate = this.unsuccessful_template
 		}
-	}else if (restUrl.id=="auth" || restUrl.id=="confirm" || restUrl.id=="logout"){
+	}else if (restUrl.id=="auth"){
+		if (data && data.success !== undefined && data.success == 1) {
+			// means that login was successful --> user will be redirected to /page/main via successful_template
+			var filenameDetailTemplate = this.successful_template
+		} else {
+			var filenameDetailTemplate = this.unsuccessful_template
+		}
+
+	}else if (restUrl.id=="confirm" || restUrl.id=="logout"){
 		if (data.success !== undefined) {
 			if (data.success == 1) {
 				var filenameDetailTemplate = this.successful_template

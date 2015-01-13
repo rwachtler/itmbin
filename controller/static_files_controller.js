@@ -24,6 +24,9 @@ StaticFilesController.prototype.handle = function(restUrl,res,redirect){
 		} else if (redirect == "not_logged_in") {
 			filename = "public/redirect/not_logged_in.html";
 			restUrl.format = "html";
+		} else if (redirect == "main") {
+			filename = "public/redirect/main.html";
+			restUrl.format = "html";
 		}
 	}
 
