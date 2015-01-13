@@ -1,17 +1,39 @@
 <script src="https://togetherjs.com/togetherjs-min.js"></script>
+<script src="/public/js/main.js"></script>
 <nav class="clearfix">
     <div class="pull-left brand">
         <h1>ITMbin</h1>
     </div>
     <ul class="pull-left">
-        <li><a>Run</a></li>
+        <li><a id="run">Run</a></li>
         <li><a>Save</a></li>
-        <li><a>Tidy</a></li>
+        <li><a id="tidy">Tidy</a></li>
         <li><a>JSHint</a></li>
-        <li><a>Add Library</a></li>
         <li><a onclick="TogetherJS(this); return false;">Collaborate</a></li>
     </ul>
     <div class="userinfo pull-right">
         {LOGIN}
     </div>
 </nav>
+<div class="row">
+    <div class="content col-xs-12 col-sm-12 col-md-6 col-lg-6">
+        <div class="info">HTML</div>
+        <textarea class="raw" id="html"></textarea>
+    </div>
+    <div class="content col-xs-12 col-sm-12 col-md-6 col-lg-6">
+        <div class="info">CSS</div>
+        <textarea id="css"></textarea>
+    </div>
+</div>
+<div class="row">
+    <div class="content col-xs-12 col-sm-12 col-md-6 col-lg-6">
+        <div class="info">JavaScript</div>
+        <textarea id="js"></textarea>
+    </div>
+    <div class="content col-xs-12 col-sm-12 col-md-6 col-lg-6">
+        <div class="info">Result</div>
+        <div id="result">
+            <iframe id="result_frame" sandbox="allow-forms allow-popups allow-scripts allow-same-origin" name="result"></iframe>
+        </div>
+    </div>
+</div>

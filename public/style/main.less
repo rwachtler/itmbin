@@ -9,7 +9,15 @@
 @lightgray: #E6E6E6;
 @emerald: #2ECC71;
 @white: #FFFFFF;
+@black: #000000;
 @darkgray: #646464;
+@midnight: #2c3e50;
+.transition(@parameter: color, @time: 2s){
+  -webkit-transition: @parameter @time ease-in;
+  -moz-transition: @parameter @time ease-in;
+  -o-transition: @parameter @time ease-in;
+  transition: @parameter @time ease-in;
+}
 html, body{
   height:100%;
   background:@cloud;
@@ -30,15 +38,32 @@ nav{
     color:@white;
     margin-top:10px;
   }
+  a{
+    color:@white;
+    &:hover{
+      text-decoration: none;
+    }
+  }
   ul{
     margin-top:20px;
     li{
       list-style: none;
       display: inline;
+      padding:0 5px 0 5px;
       a{
         color:@white;
+        .transition(color, .8s);
+        &:hover{
+          text-decoration: none;
+          color:@midnight;
+        }
       }
     }
+  }
+}
+section{
+  &.content-section{
+    height:95%;
   }
 }
 div{
@@ -50,6 +75,7 @@ div{
   }
   &.userinfo{
     margin-top:20px;
+    padding: 0px 20px 0px 0px;
   }
   font-family: @lato;
   &.form-wrapper{
@@ -92,6 +118,59 @@ div{
         border:none;
         padding:10px;
         color:@white;
+      }
+    }
+  }
+  &.row {
+    height: 47.5%;
+    margin:0;
+    div {
+      &.content {
+        padding: 0;
+        border: 4px solid @lightgray;
+        height: 100%;
+        position: relative;
+        textarea {
+          height: 100%;
+          width: 100%;
+          resize: none;
+          border:none;
+          outline:none;
+        }
+      }
+      &.info{
+        position: absolute;
+        top:5px;
+        right:10px;
+        background:rgba(46,204,113,0.5);
+        border: solid 3px @emerald;
+        border-radius: 4px;
+        padding:5px;
+        color:@midnight;
+      }
+      &#result{
+        height:100%;
+        background:@white;
+        margin:0;
+        padding:0;
+        color:inherit;
+        overflow:scroll;
+        h1,h2,h3,h3{
+          margin:0;
+        }
+        a{
+          padding:0;
+          color: @emerald;
+        }
+        p{
+
+        }
+        iframe{
+          height:100%;
+          width:100%;
+          border:none;
+          outline:none;
+        }
       }
     }
   }
