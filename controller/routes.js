@@ -5,8 +5,7 @@ module.exports = {
 	  // console.log("request-url: '"+req.url+"'");
 	  var curr_url = req.url
   	  if (curr_url == "/" || curr_url == "" ){
-		  console.log("INFO routes: we redirect '/' to our welcome page 'welcome.html'... ")
-  		  curr_url="/index.html"
+  		  curr_url = "/page/welcome";
   	  }
 	  return curr_url
 	},
