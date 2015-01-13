@@ -31,7 +31,7 @@ $(document).ready(function(){
 
         if(js !== undefined){
 
-            var script = "<script type='text/javascript'> function iFrameLoad() { var iframe = document.getElementById('result_frame'); var innerDoc = iframe.contentDocument || iframe.contentWindow.document; "+js.replace("document.", "innerDoc.")+"}</script><script type='text/javascript'>$(document).ready(function () {iFrameLoad();});</script>";
+            var script = "<script type='text/javascript'> function iFrameLoad() { var iframe = document.getElementById('result_frame'); var innerDoc = iframe.contentDocument || iframe.contentWindow.document; "+js.replace(/document\./g, "innerDoc.")+"}</script><script type='text/javascript'>$(document).ready(function () {iFrameLoad();});</script>";
 
             iframe.contents().find("head").append(script);
         }
