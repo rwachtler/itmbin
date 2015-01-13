@@ -10,10 +10,20 @@ var StaticFilesController = function(){
 	console.log("DEBUG StaticFilesController initialisation...")
 }
 
-StaticFilesController.prototype.handle = function(restUrl,res){
+StaticFilesController.prototype.handle = function(restUrl,res,redirect){
+
 	var filename = restUrl.filename
 	if (restUrl.resource.length>0) filename = restUrl.resource+"/"+filename
 	if (restUrl.relPath.length>0)  filename = restUrl.relPath+"/"+filename
+
+	// check for redirection due to illegal path/rest routing
+	if (redirect !== undefined) {
+		if (redirect == "oops") {
+			filename = "public/redirect/oops.html";
+			restUrl.format = "html";
+		}
+	}
+
 	console.log("DEBUG: serving static '"+restUrl.format+"' file: '"+filename+"'...")
 		var returnErr=this.returnErr
 	fs.readFile(filename,function(err, filedata){ // async read data (from fs/db)
