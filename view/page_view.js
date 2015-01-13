@@ -9,7 +9,6 @@ var PageView = function(){
 	this.login_template = "view/login/login_template.html"
 	this.register_template = "view/login/register_template.html"
 	this.userlist_template = "view/login/userlist_template.html"
-	this.after_register_template = "view/login/after_registration_template.html"
 	this.successful_template = "view/login/successful_template.html"
 	this.unsuccessful_template = "view/login/unsuccessful_template.html"
 }
@@ -54,7 +53,10 @@ PageView.prototype.getDetailTemplate = function(pageView, res,restUrl,data,layou
 		var filenameDetailTemplate = this.userlist_template
 	}else if (restUrl.id=="save"){
 		if (data && data.success !== undefined && data.success == 1) {
-			var filenameDetailTemplate = this.after_register_template
+			var filenameDetailTemplate = this.successful_template
+			data.js = "";
+			data.message_title = "Thank you for your registration!";
+			data.message_content = "<p>Please check your e-mail account for a mail from ITM - Bin.</p><p>When you click on the confirmation link in the e-mail, you will be able to <a href=\"/login/login\">log in</a>.</p>";
 		} else {
 			var filenameDetailTemplate = this.unsuccessful_template
 		}
@@ -75,12 +77,13 @@ PageView.prototype.getDetailTemplate = function(pageView, res,restUrl,data,layou
 			data.message_title = "You are now logged out!";
 			data.message_content = "If you want, you can go back to the <a href=\"/login/login\">login page</a>.";
 	}else if (restUrl.id=="confirm"){
-		if (data.success !== undefined) {
-			if (data.success == 1) {
+		if (data && data.success !== undefined && data.success == 1) {
 				var filenameDetailTemplate = this.successful_template
-			} else {
+				data.js = "";
+				data.message_title = "You are now successfully registered!";
+				data.message_content = "Now you can <a href=\"/login/login\">log in</a> to the main page!";
+		} else {
 				var filenameDetailTemplate = this.unsuccessful_template
-			}
 		}
 	}else{
 		var filenameDetailTemplate = this.notfound_template
