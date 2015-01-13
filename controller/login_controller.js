@@ -63,7 +63,7 @@ LoginController.prototype.handle = function(restUrl,res,config,session_id,sessMg
 																	.replace(/{CONFIRMATION_LINK}/g, conf_link);
 
 							// send confirmation mail
-							//mail_sender.sendMail(uemail, mail_subject, mail_text, function() {
+							mail_sender.sendMail(uemail, mail_subject, mail_text, function() {
 								// redirect to confirmation page
 								// show please confirm via email page
 								var data = {
@@ -73,7 +73,7 @@ LoginController.prototype.handle = function(restUrl,res,config,session_id,sessMg
 
 									var theView = new PageView()
 									theView.render(res,restUrl, data)
-							//});
+							});
 						}else
 							returnErr(res,"Error reading mail template file: " + err);
 					});
