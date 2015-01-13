@@ -36,17 +36,12 @@ LoginController.prototype.handle = function(restUrl,res,config,session_id,sessMg
 
 		var theView = new PageView()
 		theView.render(res,restUrl, data)
-	} else if (restUrl.id == "register") {
-		var data = { title: "ITM - Bin Register"};
-
-		var theView = new PageView()
-		theView.render(res,restUrl, data)
 	} else if (restUrl.id == "save") {
 			if (restUrl.params.new_user !== undefined) {
 				// we use decodeURIComponent because for instance @ gets converted to %40.
 				var uname = decodeURIComponent(restUrl.params.new_user);
 				var uemail = decodeURIComponent(restUrl.params.new_email);
-				var upassw = decodeURIComponent(restUrl.params.new_pass);
+				var upassw = decodeURIComponent(restUrl.params.new_password);
 
 				// save the registration and send confirmation mail
 				var auth_key = binhelper.getAuthKey();
@@ -68,20 +63,17 @@ LoginController.prototype.handle = function(restUrl,res,config,session_id,sessMg
 																	.replace(/{CONFIRMATION_LINK}/g, conf_link);
 
 							// send confirmation mail
-							/*mail_sender.sendMail(uemail, mail_subject, mail_text, function() {
+							mail_sender.sendMail(uemail, mail_subject, mail_text, function() {
 								// redirect to confirmation page
-								console.log("redirecting to confirmation page...");
+								// show please confirm via email page
+								var data = {
+										title: "ITM - Bin Confirmation successful",
+										success: 1
+									};
 
-							});*/
-
-							// show please confirm via email page
-							var data = {
-									title: "ITM - Bin Confirmation successful",
-									success: 1
-								};
-
-								var theView = new PageView()
-								theView.render(res,restUrl, data)
+									var theView = new PageView()
+									theView.render(res,restUrl, data)
+							});
 						}else
 							returnErr(res,"Error reading mail template file: " + err);
 					});
@@ -195,6 +187,10 @@ LoginController.prototype.handle = function(restUrl,res,config,session_id,sessMg
 		console.log("DEBUG PageController handle: id unknown:",restUrl.id)
 		var msg="DEBUG PageController: id should be 'welcome' or 'about' or '...'."+
 				" We do not know how to handle '"+restUrl.id+"'!"
+
+		// return oops page
+		var staticFileController = require('./static_files_controller')
+		staticFileController.handle(restUrl,res,"oops")
 	}
 
 }

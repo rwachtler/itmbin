@@ -9,7 +9,6 @@ var PageView = function(){
 	this.login_template = "view/login/login_template.html"
 	this.register_template = "view/login/register_template.html"
 	this.userlist_template = "view/login/userlist_template.html"
-	this.after_register_template = "view/login/after_registration_template.html"
 	this.successful_template = "view/login/successful_template.html"
 	this.unsuccessful_template = "view/login/unsuccessful_template.html"
 }
@@ -24,6 +23,12 @@ PageView.prototype.formatHtml = function(res,restUrl,data,htmlTemplate){
 	// Replace "eingeloggt als..."
 	var login_html = data && data.login ? data.login || "" : "";
 	result = result.replace(/{LOGIN}/g, login_html);
+
+	if (data && data.message_title) {
+		result = result.replace(/{JS}/g, data.js)
+									 .replace(/{MESSAGE_TITLE}/g, data.message_title)
+									 .replace(/{MESSAGE_CONTENT}/g, data.message_content);
+	}
 
 	if (data && data.user_list)
 			result=result.replace(/{USER_LIST}/g,data.user_list );
@@ -44,23 +49,41 @@ PageView.prototype.getDetailTemplate = function(pageView, res,restUrl,data,layou
 		var filenameDetailTemplate = this.about_template
 	}else if (restUrl.id=="login"){
 		var filenameDetailTemplate = this.login_template
-	}else if (restUrl.id=="register"){
-		var filenameDetailTemplate = this.register_template
 	}else if (restUrl.id=="list"){
 		var filenameDetailTemplate = this.userlist_template
 	}else if (restUrl.id=="save"){
 		if (data && data.success !== undefined && data.success == 1) {
-			var filenameDetailTemplate = this.after_register_template
+			var filenameDetailTemplate = this.successful_template
+			data.js = "";
+			data.message_title = "Thank you for your registration!";
+			data.message_content = "<p>Please check your e-mail account for a mail from ITM - Bin.</p><p>When you click on the confirmation link in the e-mail, you will be able to <a href=\"/login/login\">log in</a>.</p>";
 		} else {
 			var filenameDetailTemplate = this.unsuccessful_template
 		}
-	}else if (restUrl.id=="auth" || restUrl.id=="confirm" || restUrl.id=="logout"){
-		if (data.success !== undefined) {
-			if (data.success == 1) {
+	}else if (restUrl.id=="auth"){
+		if (data && data.success !== undefined && data.success == 1) {
+			// means that login was successful --> user will be redirected to /page/main via successful_template
+			var filenameDetailTemplate = this.successful_template
+			data.js = "window.location='/page/main';";
+			data.message_title = "You are now logged in!";
+			data.message_content = "You will be redirected to the <a href=\"/page/main\">main page</a>.";
+		} else {
+			var filenameDetailTemplate = this.unsuccessful_template
+		}
+
+	}else if (restUrl.id=="logout"){
+			var filenameDetailTemplate = this.successful_template
+			data.js = "";
+			data.message_title = "You are now logged out!";
+			data.message_content = "If you want, you can go back to the <a href=\"/login/login\">login page</a>.";
+	}else if (restUrl.id=="confirm"){
+		if (data && data.success !== undefined && data.success == 1) {
 				var filenameDetailTemplate = this.successful_template
-			} else {
+				data.js = "";
+				data.message_title = "You are now successfully registered!";
+				data.message_content = "Now you can <a href=\"/login/login\">log in</a> to the main page!";
+		} else {
 				var filenameDetailTemplate = this.unsuccessful_template
-			}
 		}
 	}else{
 		var filenameDetailTemplate = this.notfound_template

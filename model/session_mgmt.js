@@ -87,7 +87,11 @@ var sessionManagement = {
 	},
 
 	getLoginHtml: function (user_) {
-		return user_ === null ? "nicht eingeloggt. <a href=\"/login/login\">Login</a>" : "eingeloggt als <strong>" + user_["user_name"] + "</strong>. <a href=\"/login/logout\">Logout</a>";
+		//return user_ === null ? "nicht eingeloggt. <a href=\"/login/login\">Login</a>" : "eingeloggt als <strong>" + user_["user_name"] + "</strong>. <a href=\"/login/logout\">Logout</a>";
+		if (user_ !== null)
+			return user_["user_name"];
+		else
+			return "Nicht eingeloggt";
 	}
 
 
