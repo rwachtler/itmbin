@@ -14,7 +14,8 @@ var sessMgmt = require('../model/session_mgmt')
 // MySql connector
 var db = require('../helper/db-mysql');
 var conn = new db.Connection();
-
+conn.create();
+conn.init();
 // ITM - Bin helper
 var ItmBin = require('../helper/itmbin')
 var binhelper = new ItmBin.ItmBin();

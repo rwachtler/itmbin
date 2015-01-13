@@ -12,7 +12,7 @@
 @black: #000000;
 @darkgray: #646464;
 @midnight: #2c3e50;
-.transition(@parameter: color, @time: 2s){
+.transition(@parameter: all, @time: 2s){
   -webkit-transition: @parameter @time ease-in;
   -moz-transition: @parameter @time ease-in;
   -o-transition: @parameter @time ease-in;
@@ -51,11 +51,14 @@ nav{
       display: inline;
       padding:0 5px 0 5px;
       a{
-        color:@white;
-        .transition(color, .8s);
+        color:@midnight;
+        background-color: transparent;
+        .transition(all, .8s);
         &:hover{
           text-decoration: none;
-          color:@midnight;
+          color:@white;
+          background-color:@midnight;
+
         }
       }
     }
@@ -67,6 +70,49 @@ section{
   }
 }
 div{
+  &#start{
+    -webkit-box-shadow: 5px 5px 10px @black;
+    -moz-box-shadow: 5px 5px 10px @black;
+    box-shadow: 5px 5px 10px @black;
+    margin-top:10%;
+    background:@emerald;
+    height:50%;
+    width:60%;
+    margin-left:auto;
+    margin-right: auto;
+    h1{
+      color:@white;
+      text-align: center;
+      padding-top:100px;
+      padding-bottom: 50px;
+    }
+    span{
+      &.itmbin{
+        font-family: @changa;
+      }
+    }
+    a{
+      .transition(background-color, .8s);
+
+      color:@midnight;
+      padding:5px;
+      background-color:transparent;
+      &:hover{
+        color:@white;
+        background-color:@midnight;
+        text-decoration: none;
+      }
+    }
+    div{
+      width:80%;
+      margin-left:auto;
+      margin-right:auto;
+    }
+    p{
+      color:@white;
+      font-size: 18px;
+    }
+  }
   &#togetherjs-dock{
     background:@emerald;
   }
@@ -125,6 +171,7 @@ div{
     height: 47.5%;
     margin:0;
     div {
+
       &.content {
         padding: 0;
         border: 4px solid @lightgray;
@@ -185,6 +232,19 @@ div{
       display:none;
     }
   }
+
+  &.user-list{
+    width:75%;
+  }
+
+}
+table, th, td{
+  border-top: solid 1px;
+  border-color:@darkgray;
+  padding:5px;
+}
+table{
+  margin:auto;
 }
 footer{
   text-align: center;
