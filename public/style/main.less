@@ -53,6 +53,7 @@ nav{
       a{
         color:@midnight;
         background-color: transparent;
+        padding:5px;
         .transition(all, .8s);
         &:hover{
           text-decoration: none;
@@ -66,7 +67,7 @@ nav{
 }
 section{
   &.content-section{
-    height:95%;
+    height:100%;
   }
 }
 div{
@@ -74,13 +75,17 @@ div{
     -webkit-box-shadow: 5px 5px 10px @black;
     -moz-box-shadow: 5px 5px 10px @black;
     box-shadow: 5px 5px 10px @black;
-    margin-top:10%;
     background:@emerald;
     height:auto;
-    width:60%;
-    margin-left:auto;
-    margin-right: auto;
+    width:95%;
+    margin:auto;
+    position: relative;
+
     padding-bottom:100px;
+    @media all and(min-width:768px){
+      width:60%;
+      transform:translateY(25%);
+    }
     h1{
       color:@white;
       text-align: center;
@@ -129,15 +134,16 @@ div{
   }
   font-family: @lato;
   &.form-wrapper{
-    margin-top:200px;
-    margin-left:auto;
-    margin-right:auto;
-    width:60%;
+    margin:auto;
+    position: relative;
+
+    width:95%;
     height:auto;
     background: @lightgray;
     position: relative;
-    @media all and(max-width:768px){
-      width:95%;
+    @media all and(min-width:768px){
+      width:60%;
+      transform:translateY(25%);
     }
   }
   &.form-head{
@@ -253,5 +259,6 @@ table{
 }
 footer{
   text-align: center;
+  margin-top:20px;
 }
 

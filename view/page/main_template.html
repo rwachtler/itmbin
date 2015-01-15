@@ -1,19 +1,31 @@
 <script src="https://togetherjs.com/togetherjs-min.js"></script>
-<script src="/public/codemirror/lib/codemirror.js"></script>
-<link rel="stylesheet" href="/public/codemirror/lib/codemirror.css">
-<script src="/public/codemirror/mode/javascript/javascript.js"></script>
-<script src="/public/codemirror/mode/css/css.js"></script>
-<script src="/public/codemirror/mode/htmlmixed/htmlmixed.js"></script>
-<script src="/public/js/main.js"></script>
+<script src="/public/codemirror/lib/codemirror.min.js"></script>
+<script src="/public/emmet/emmet.min.js"></script>
+<link rel="stylesheet" href="/public/codemirror/lib/codemirror.min.css">
+<link rel="stylesheet" href="/public/codemirror/addon/lint/lint.min.css">
+<script src="/public/codemirror/mode/javascript/javascript.min.js"></script>
+<script src="/public/codemirror/mode/css/css.min.js"></script>
+<script src="/public/codemirror/mode/htmlmixed/htmlmixed.min.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jshint/r07/jshint.js"></script>
+<script src="https://rawgithub.com/stubbornella/csslint/master/release/csslint.js"></script>
+<script src="/public/codemirror/addon/lint/lint.min.js"></script>
+<script src="/public/codemirror/addon/lint/javascript-lint.min.js"></script>
+<script src="/public/codemirror/addon/lint/css-lint.min.js"></script>
+<script src="/public/codemirror/addon/edit/closebrackets.min.js"></script>
+<script src="/public/codemirror/addon/edit/closetag.min.js"></script>
+<script src="/public/codemirror/addon/edit/matchbrackets.min.js"></script>
+<script src="/public/codemirror/addon/fold/xml-fold.min.js"></script>
+<script src="/public/codemirror/addon/edit/matchtags.min.js"></script>
+<script src="/public/codemirror/addon/edit/autoformat.min.js"></script>
+<script src="/public/codemirror/mode/xml/xml.min.js"></script>
+<script src="/public/js/main.min.js"></script>
 <nav class="clearfix">
     <div class="pull-left brand">
         <h1>ITMbin</h1>
     </div>
     <ul class="pull-left">
         <li><a id="run">Run</a></li>
-        <li><a>Save</a></li>
         <li><a id="tidy">Tidy</a></li>
-        <li><a>JSHint</a></li>
         <li><a onclick="TogetherJS(this); return false;">Collaborate</a></li>
     </ul>
     <div class="userinfo pull-right">
@@ -42,3 +54,6 @@
         </div>
     </div>
 </div>
+<script>
+    TogetherJSConfig_cloneClicks = "#run, .toggler";
+</script>

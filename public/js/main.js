@@ -13,7 +13,13 @@ $(document).ready(function(){
     },
         {
             value: htmlTextArea.value,
-            lineNumbers: true
+            lineNumbers: true,
+            mode: "text/html",
+            matchTags: {bothTags: true},
+            autoCloseTags: true,
+            profile: "html",
+            smartIndent: true,
+            indentWithTabs: true
         });
     var cssCodeMirror = CodeMirror(function(elt) {
             cssTextArea.parentNode.replaceChild(elt, cssTextArea);
@@ -21,7 +27,14 @@ $(document).ready(function(){
         {
             value: cssTextArea.value,
             lineNumbers: true,
-            mode:  "css"
+            mode:  "css",
+            gutters: ["CodeMirror-lint-markers"],
+            lint: true,
+            autoCloseBrackets: true,
+            matchBrackets: true,
+            profile: "css",
+            smartIndent: true,
+            indentWithTabs: true
         });
     var jsCodeMirror = CodeMirror(function(elt) {
             jsTextArea.parentNode.replaceChild(elt, jsTextArea);
@@ -29,14 +42,19 @@ $(document).ready(function(){
         {
             value: jsTextArea.value,
             lineNumbers: true,
-            mode:  "javascript"
+            mode:  "javascript",
+            gutters: ["CodeMirror-lint-markers"],
+            lint: true,
+            autoCloseBrackets: true,
+            matchBrackets: true,
+            smartIndent: true,
+            indentWithTabs: true
         });
     $("#run").click(function(){
         iframe.contents().find("head").empty();
         iframe.contents().find("head").append("<script src='/public/js/jquery/jquery.min.js'></script>");
         var htmlInput = htmlCodeMirror.getValue();
-        //var css = $("#css").val();
-        //var js = $("#js").val();
+        console.log("clickRun");
         if(cssCodeMirror.getValue() !== undefined){
 
             var data=[cssCodeMirror.getValue()];
@@ -70,4 +88,18 @@ $(document).ready(function(){
         }
     });
 
+    $("#tidy").click(function(){
+        autoFormat(htmlCodeMirror);
+        autoFormat(cssCodeMirror);
+        autoFormat(jsCodeMirror);
+    });
+
+    function autoFormat(editor) {
+        var totalLines = editor.lineCount();
+        var totalChars = editor.getValue().length;
+        editor.autoFormatRange({line:0, ch:0}, {line:totalLines, ch:totalChars});
+        editor.setCursor({line:totalLines, ch:totalChars});
+    }
+
 });
+
