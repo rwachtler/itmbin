@@ -3,3 +3,6 @@ helper/db-mysql.js
 
 #.IDEA PHPSTORM
 .idea/*
+
+#NODE MODULES
+node_modules/*

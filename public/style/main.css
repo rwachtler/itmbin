@@ -106,6 +106,9 @@ div#start p {
   color: #ffffff;
   font-size: 18px;
 }
+div.CodeMirror {
+  height: 100%;
+}
 div#togetherjs-dock {
   background: #2ecc71;
 }
@@ -187,6 +190,7 @@ div.row div.info {
   border-radius: 4px;
   padding: 5px;
   color: #2c3e50;
+  z-index: 999;
 }
 div.row div#result {
   height: 100%;
